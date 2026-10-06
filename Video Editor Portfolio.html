@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your Name — Video Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1efea;--fg:#17191f;--mute:#62666f;--line:#d6d3cb;--card:#e7e4dc;--accent:#d8402b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13161c;--fg:#eceae4;--mute:#9a9ea8;--line:#2a2e38;--card:#1b1f27;--accent:#ff6a4d}}
+:root[data-theme="dark"]{--bg:#13161c;--fg:#eceae4;--mute:#9a9ea8;--line:#2a2e38;--card:#1b1f27;--accent:#ff6a4d}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Bricolage Grotesque',system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+header.nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+header.nav a{text-decoration:none;margin-left:20px;color:var(--mute)}
+header.nav a:hover{color:var(--fg)}
+.logo{font-weight:800;margin:0!important;color:var(--fg)!important}
+.hero{padding:56px 0 24px}
+h1{font-size:clamp(2.6rem,9vw,6.2rem);line-height:.95;letter-spacing:-.03em;font-weight:800;margin:0 0 20px;max-width:12ch}
+.hero p{font-size:1.15rem;color:var(--mute);max-width:46ch;margin:0 0 36px}
+.timeline{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;cursor:ew-resize;user-select:none;touch-action:pan-y}
+.track{display:flex;gap:4px;margin:4px 0;height:26px}
+.track i{display:block;border-radius:3px;background:var(--card);border:1px solid var(--line)}
+.track i.on{background:var(--accent);border-color:var(--accent);opacity:.9}
+.playhead{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);left:30%}
+.playhead::before{content:"";position:absolute;top:-1px;left:-5px;border:6px solid transparent;border-top-color:var(--accent)}
+.tc{font-variant-numeric:tabular-nums;color:var(--mute);font-size:.85rem;margin-top:8px}
+section{padding:56px 0}
+h2{font-size:1.8rem;letter-spacing:-.02em;margin:0 0 20px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.filters button{font:inherit;padding:7px 16px;border-radius:99px;border:1px solid var(--line);background:none;color:var(--fg);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px}
+.work{text-decoration:none;display:block}
+.thumb{aspect-ratio:16/9;border-radius:6px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.play{width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s}
+.play::after{content:"";margin-left:4px;border-left:15px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.work:hover .play{transform:scale(1.12);background:var(--accent)}
+.dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.75rem;padding:1px 7px;border-radius:3px}
+.work h3{margin:12px 0 2px;font-size:1.1rem}
+.work span{color:var(--mute);font-size:.9rem}
+.about{display:grid;gap:32px;grid-template-columns:1fr}
+@media(min-width:800px){.about{grid-template-columns:1.2fr 1fr}}
+.about p{color:var(--mute);max-width:60ch;margin-top:0}
+ul.tools{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+ul.tools li{border:1px solid var(--line);border-radius:6px;padding:4px 12px;font-size:.95rem}
+.contact{border-top:1px solid var(--line)}
+.contact a.big{font-size:clamp(1.6rem,5vw,3rem);font-weight:800;letter-spacing:-.02em;text-decoration-thickness:3px;text-decoration-color:var(--accent);text-underline-offset:6px}
+footer{padding:24px 0 40px;color:var(--mute);font-size:.9rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="nav">
+    <a class="logo" href="#top">Your Name</a>
+    <nav><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+  </header>
+
+  <div class="hero" id="top">
+    <h1>I cut stories that hold attention.</h1>
+    <p>Video editor for brands, musicians and creators. Commercials, music videos, short films and social content, from rough cut to final grade.</p>
+    <div class="timeline" id="tl" aria-hidden="true">
+      <div class="track" id="t1"></div><div class="track" id="t2"></div>
+      <div class="playhead" id="ph"></div>
+      <div class="tc" id="tc">00:00:12:05</div>
+    </div>
+  </div>
+
+  <section id="work">
+    <h2>Selected work</h2>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="about" class="about">
+    <div>
+      <h2>About</h2>
+      <p>Write two or three sentences here about who you are, how long you've been editing, and what kind of projects you enjoy most. Mention your style: fast and punchy, slow and cinematic, documentary-driven.</p>
+    </div>
+    <div>
+      <h2>Tools</h2>
+      <ul class="tools"><li>Premiere Pro</li><li>DaVinci Resolve</li><li>After Effects</li><li>Final Cut Pro</li><li>Color grading</li><li>Sound design</li></ul>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Have a project?</h2>
+    <a class="big" href="mailto:hello@yourname.com">hello@yourname.com</a>
+  </section>
+
+  <footer>© <span id="yr"></span> Your Name · <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a> · <a href="https://youtube.com/" target="_blank" rel="noopener">YouTube</a> · <a href="https://vimeo.com/" target="_blank" rel="noopener">Vimeo</a></footer>
+</div>
+
+<script>
+/* ===== EDIT YOUR WORK HERE =====
+   title, category, year, duration, link (YouTube/Vimeo URL), hue (0-360 thumbnail colour) */
+const WORKS = [
+  {title:"Neon Nights", category:"Music Video", year:2026, duration:"3:42", link:"https://youtube.com", hue:340},
+  {title:"Brand Story: Roast & Co.", category:"Commercial", year:2026, duration:"1:05", link:"https://youtube.com", hue:25},
+  {title:"The Long Way Home", category:"Short Film", year:2025, duration:"12:18", link:"https://vimeo.com", hue:210},
+  {title:"Summer Reel", category:"Social", year:2025, duration:"0:30", link:"https://youtube.com", hue:150},
+  {title:"Founders Interview", category:"Documentary", year:2025, duration:"8:20", link:"https://vimeo.com", hue:270},
+  {title:"Product Launch Teaser", category:"Commercial", year:2024, duration:"0:45", link:"https://youtube.com", hue:190}
+];
+
+const grid=document.getElementById('grid'), fl=document.getElementById('filters');
+const cats=['All',...new Set(WORKS.map(w=>w.category))];
+let active='All';
+function render(){
+  fl.innerHTML=cats.map(c=>`<button aria-pressed="${c===active}" data-c="${c}">${c}</button>`).join('');
+  grid.innerHTML=WORKS.filter(w=>active==='All'||w.category===active).map(w=>`
+    <a class="work" href="${w.link}" target="_blank" rel="noopener">
+      <div class="thumb" style="background:linear-gradient(135deg,hsl(${w.hue} 60% 38%),hsl(${(w.hue+50)%360} 55% 18%))">
+        <div class="play"></div><span class="dur" style="color:#fff">${w.duration}</span>
+      </div>
+      <h3>${w.title}</h3><span>${w.category} · ${w.year}</span>
+    </a>`).join('');
+}
+fl.addEventListener('click',e=>{const b=e.target.closest('button');if(b){active=b.dataset.c;render();}});
+render();
+
+/* timeline hero */
+const t1=document.getElementById('t1'),t2=document.getElementById('t2');
+function clips(el,seed){let s=seed,html='';for(let i=0;i<14;i++){s=(s*9301+49297)%233280;const w=1+Math.floor(s/233280*4);html+=`<i class="${s%5===0?'on':''}" style="flex:${w}"></i>`}el.innerHTML=html}
+clips(t1,7);clips(t2,31);
+const tl=document.getElementById('tl'),ph=document.getElementById('ph'),tc=document.getElementById('tc');
+function seek(x){const r=tl.getBoundingClientRect();let p=Math.min(1,Math.max(0,(x-r.left)/r.width));ph.style.left=(p*100)+'%';
+  const f=Math.floor(p*90*24),pad=n=>String(n).padStart(2,'0');
+  tc.textContent=`00:${pad(Math.floor(f/24/60))}:${pad(Math.floor(f/24)%60)}:${pad(f%24)}`}
+let drag=false;
+tl.addEventListener('pointerdown',e=>{drag=true;seek(e.clientX)});
+window.addEventListener('pointermove',e=>{if(drag)seek(e.clientX)});
+window.addEventListener('pointerup',()=>drag=false);
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
